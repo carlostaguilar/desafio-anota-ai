@@ -1,4 +1,4 @@
-package com.carlosaguilar.desafio_anota_ai;
+package com.carlosaguilar.desafioanotaai;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

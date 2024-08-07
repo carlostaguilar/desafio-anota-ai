@@ -1,4 +1,4 @@
-package com.carlosaguilar.desafio_anota_ai;
+package com.carlosaguilar.desafioanotaai;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
