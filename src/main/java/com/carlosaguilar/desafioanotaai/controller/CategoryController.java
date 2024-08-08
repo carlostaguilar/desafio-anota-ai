@@ -35,4 +35,10 @@ public class CategoryController {
         return ResponseEntity.ok().body(updatedcategory);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Category> delete(@PathParam("id") String id) {
+        this.categoryService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
