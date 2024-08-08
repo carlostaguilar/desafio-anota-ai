@@ -3,7 +3,6 @@ package com.carlosaguilar.desafioanotaai.controller;
 import com.carlosaguilar.desafioanotaai.domain.category.Category;
 import com.carlosaguilar.desafioanotaai.domain.category.dto.CategoryDTO;
 import com.carlosaguilar.desafioanotaai.service.CategoryService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/category")
 public class CategoryController {
 
     @Autowired
@@ -30,13 +29,13 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> update(@PathParam("id") String id, @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<Category> update(@PathVariable("id") String id, @RequestBody CategoryDTO categoryDTO) {
         Category updatedcategory = this.categoryService.update(id, categoryDTO);
         return ResponseEntity.ok().body(updatedcategory);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Category> delete(@PathParam("id") String id) {
+    public ResponseEntity<Category> delete(@PathVariable("id") String id) {
         this.categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
