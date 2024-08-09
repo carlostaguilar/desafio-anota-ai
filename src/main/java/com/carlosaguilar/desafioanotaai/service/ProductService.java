@@ -1,11 +1,13 @@
 package com.carlosaguilar.desafioanotaai.service;
 
+import com.carlosaguilar.desafioanotaai.domain.aws.dto.MessageDTO;
 import com.carlosaguilar.desafioanotaai.domain.category.Category;
 import com.carlosaguilar.desafioanotaai.domain.category.exceptions.CategoryNotFoundException;
 import com.carlosaguilar.desafioanotaai.domain.product.Product;
 import com.carlosaguilar.desafioanotaai.domain.product.dto.ProductDTO;
 import com.carlosaguilar.desafioanotaai.domain.product.exceptions.ProductNotFoundException;
 import com.carlosaguilar.desafioanotaai.repositories.ProductRepository;
+import com.carlosaguilar.desafioanotaai.service.aws.AwsSnsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,13 +22,20 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private AwsSnsService snsService;
+
     public Product insert(ProductDTO productDTO) {
         Category category = this.categoryService.getById(productDTO.categoryId())
                 .orElseThrow(CategoryNotFoundException::new);
 
         Product newProduct = new Product(productDTO);
         newProduct.setCategory(category);
+
         this.productRepository.save(newProduct);
+
+        this.snsService.publish(new MessageDTO(newProduct.getOwnerId()));
+
         return newProduct;
     }
 
@@ -48,6 +57,8 @@ public class ProductService {
         if (!(productDTO.price() == null)) product.setPrice(productDTO.price());
 
         this.productRepository.save(product);
+
+        this.snsService.publish(new MessageDTO(product.getOwnerId()));
 
         return product;
     }
