@@ -1,8 +1,6 @@
 aws:
-  accessKeyId: ${AWS_ACCESS_KEY_ID}
-  secretKey: ${AWS_SECRET_ACCESS_KEY}
-  region: ${AWS_REGION}
   sns:
-    topic:
-      catalog:
-        arn: ${AWS_SNS_TOPIC_ARN}
+    accessKeyId: ${AWS_ACCESS_KEY_ID}
+    secretKey: ${AWS_SECRET_ACCESS_KEY}
+    region: ${AWS_REGION}
+    topic-arn: ${AWS_SNS_TOPIC_ARN}
