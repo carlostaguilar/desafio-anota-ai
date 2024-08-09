@@ -1,7 +1,6 @@
 package com.carlosaguilar.desafioanotaai.service;
 
 import com.carlosaguilar.desafioanotaai.domain.aws.dto.MessageDTO;
-import com.carlosaguilar.desafioanotaai.domain.category.Category;
 import com.carlosaguilar.desafioanotaai.domain.category.exceptions.CategoryNotFoundException;
 import com.carlosaguilar.desafioanotaai.domain.product.Product;
 import com.carlosaguilar.desafioanotaai.domain.product.dto.ProductDTO;
@@ -26,15 +25,14 @@ public class ProductService {
     private AwsSnsService snsService;
 
     public Product insert(ProductDTO productDTO) {
-        Category category = this.categoryService.getById(productDTO.categoryId())
+        this.categoryService.getById(productDTO.categoryId())
                 .orElseThrow(CategoryNotFoundException::new);
 
         Product newProduct = new Product(productDTO);
-        newProduct.setCategory(category);
 
         this.productRepository.save(newProduct);
 
-        this.snsService.publish(new MessageDTO(newProduct.getOwnerId()));
+        this.snsService.publish(new MessageDTO(newProduct.toString()));
 
         return newProduct;
     }
@@ -49,7 +47,8 @@ public class ProductService {
 
         if(productDTO.categoryId() != null) {
             this.categoryService.getById(productDTO.categoryId())
-                    .ifPresent(product::setCategory);
+                    .orElseThrow(CategoryNotFoundException::new);
+            product.setCategory(productDTO.categoryId());
         }
 
         if (!productDTO.title().isEmpty()) product.setTitle(productDTO.title());
@@ -58,7 +57,7 @@ public class ProductService {
 
         this.productRepository.save(product);
 
-        this.snsService.publish(new MessageDTO(product.getOwnerId()));
+        this.snsService.publish(new MessageDTO(product.toString()));
 
         return product;
     }

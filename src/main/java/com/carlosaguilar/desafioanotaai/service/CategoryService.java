@@ -1,9 +1,11 @@
 package com.carlosaguilar.desafioanotaai.service;
 
+import com.carlosaguilar.desafioanotaai.domain.aws.dto.MessageDTO;
 import com.carlosaguilar.desafioanotaai.domain.category.Category;
 import com.carlosaguilar.desafioanotaai.domain.category.dto.CategoryDTO;
 import com.carlosaguilar.desafioanotaai.domain.category.exceptions.CategoryNotFoundException;
 import com.carlosaguilar.desafioanotaai.repositories.CategoryRepository;
+import com.carlosaguilar.desafioanotaai.service.aws.AwsSnsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,15 @@ public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private AwsSnsService snsService;
+
     public Category insert(CategoryDTO categoryDTO) {
         Category newCategory = new Category(categoryDTO);
         this.categoryRepository.save(newCategory);
+
+        this.snsService.publish(new MessageDTO(newCategory.toString()));
+
         return newCategory;
     }
 
@@ -38,6 +46,8 @@ public class CategoryService {
         if (!categoryDTO.description().isEmpty()) category.setDescription(categoryDTO.description());
 
         this.categoryRepository.save(category);
+
+        this.snsService.publish(new MessageDTO(category.toString()));
 
         return category;
     }
