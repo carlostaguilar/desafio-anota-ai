@@ -8,6 +8,8 @@ import org.json.JSONObject;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
 @Document(collection = "categories")
 @Getter
 @Setter
@@ -20,6 +22,7 @@ public class Category {
     private String title;
     private String description;
     private String ownerId;
+    private String type;
 
     public Category(CategoryDTO categoryDTO) {
         this.title = categoryDTO.title();
@@ -37,5 +40,21 @@ public class Category {
         json.put("type", "category");
 
         return json.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(title, category.title) &&
+                Objects.equals(description, category.description) &&
+                Objects.equals(ownerId, category.ownerId) &&
+                Objects.equals(type, category.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, description, ownerId, type);
     }
 }
