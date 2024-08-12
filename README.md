@@ -72,6 +72,80 @@ mvn test
 - **Get All Categories**: Retrieves all categories.
 - **Get Category by ID**: Retrieves a category by its ID.
 
+#### Endpoints
+
+##### Products
+
+1. **Create Product**
+   - **Endpoint:** `POST /products`
+   - **Request Body Template:**
+     ```json
+     {
+       "name": "string",
+       "description": "string",
+       "price": "number",
+       "categoryId": "string"
+     }
+     ```
+
+
+2. **Get Product by ID**
+   - **Endpoint:** `GET /products/{id}`
+   - **Request Body:** None
+
+
+3. **Update Product**
+   - **Endpoint:** `PUT /products/{id}`
+   - **Request Body Template:**
+     ```json
+     {
+       "name": "string",
+       "description": "string",
+       "price": "number",
+       "categoryId": "string"
+     }
+     ```
+
+
+4. **Delete Product**
+   - **Endpoint:** `DELETE /products/{id}`
+   - **Request Body:** None
+
+
+##### Categories
+
+1. **Create Category**
+   - **Endpoint:** `POST /categories`
+   - **Request Body Template:**
+     ```json
+     {
+       "name": "string",
+       "description": "string"
+     }
+     ```
+
+
+2. **Get Category by ID**
+   - **Endpoint:** `GET /categories/{id}`
+   - **Request Body:** None
+
+
+3. **Update Category**
+   - **Endpoint:** `PUT /categories/{id}`
+   - **Request Body Template:**
+     ```json
+     {
+       "name": "string",
+       "description": "string"
+     }
+     ```
+
+
+4. **Delete Category**
+   - **Endpoint:** `DELETE /categories/{id}`
+   - **Request Body:** None
+
+  
 ### AWS Integration
 
 - **S3 Operations**: Handles S3 operations such as getting and putting objects.
